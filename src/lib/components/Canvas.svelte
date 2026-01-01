@@ -13,9 +13,25 @@
     {#if !data}
         <div
             in:fade
-            class="text-8xl font-black tracking-[0.2em] text-gray-800/50 select-none drop-shadow-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            class="flex flex-col items-center justify-center gap-6 opacity-30 select-none pointer-events-auto"
         >
-            CANVAS
+            <img
+                src="/logo.png"
+                alt="Learn By Canvas Logo"
+                class="w-32 h-32 object-contain"
+            />
+            <div
+                class="text-4xl font-black tracking-widest text-white uppercase text-center"
+            >
+                Learn By Canvas
+            </div>
+            <a
+                href="https://github.com/Zundrium/learn-by-canvas"
+                target="_blank"
+                class="text-white/50 hover:text-white transition-colors text-sm tracking-widest uppercase border-b border-transparent hover:border-white"
+            >
+                github.com/Zundrium/learn-by-canvas
+            </a>
         </div>
     {:else if data.type === "sentence"}
         <SentenceView

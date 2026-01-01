@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="static/logo.png" alt="Learn By Canvas Logo" width="120" />
+</div>
+
 # Learn By Canvas
 
 **Learn By Canvas** is an interactive, multimodal learning application powered by Google's Gemini Multimodal Live API. It combines real-time voice conversation with a dynamic visual canvas to create an immersive tutoring experience.
