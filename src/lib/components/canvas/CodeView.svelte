@@ -1,11 +1,23 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import gsap from "gsap";
+    import hljs from "highlight.js";
+    import "highlight.js/styles/atom-one-dark.css";
 
     export let code: string;
     export let language: string = "";
 
     let container: HTMLDivElement;
+    let codeElement: HTMLElement;
+
+    $: if (code && codeElement) {
+        // We use tick to ensure the DOM is updated with the new text before highlighting
+        tick().then(() => {
+            // Remove data-highlighted attribute to force re-highlighting if needed, though innerHTML replace usually clears it
+            codeElement.removeAttribute("data-highlighted");
+            hljs.highlightElement(codeElement);
+        });
+    }
 
     onMount(() => {
         const ctx = gsap.context(() => {
@@ -41,6 +53,7 @@
     {/if}
     <pre
         class="p-8 overflow-x-auto text-lg font-mono text-gray-200 leading-relaxed whitespace-pre-wrap tracking-tight"><code
-            >{code}</code
+            bind:this={codeElement}
+            class={language ? `language-${language}` : ""}>{code}</code
         ></pre>
 </div>
