@@ -76,6 +76,8 @@ export class GeminiSession {
         this.outputAnalyser.connect(this.audioContext.destination);
         console.log("AudioContext created. State:", this.audioContext.state);
 
+        this.initializeAudio(); // Initialize audio immediately to capture user gesture
+
         const url = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${this.config.apiKey}`;
         console.log("Connecting to WebSocket:", url);
         this.ws = new WebSocket(url);
@@ -84,7 +86,6 @@ export class GeminiSession {
             console.log("WebSocket Connected!");
             this.isConnected = true;
             this.sendSetup();
-            this.initializeAudio();
         };
 
         this.ws.onmessage = async (event) => {
