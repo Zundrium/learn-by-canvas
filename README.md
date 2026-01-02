@@ -45,13 +45,10 @@ The core idea is to simulate a "live session" where an AI tutor behaves like a h
     npm install
     ```
 
-3.  **Environment Setup**:
-    Create a `.env` file in the root directory (copy from `.env.example` if available) and add your API key:
-    ```env
-    VITE_GEMINI_API_KEY=your_gemini_api_key_here
-    ```
+3.  **API Key Setup**:
+    -   You will need a valid Google Gemini API Key.
+    -   The application will prompt you to enter this key in the "Settings" menu upon first launch.
 
-    > **Warning**: Never commit your `.env` file to version control.
 
 ## Usage
 
@@ -74,7 +71,9 @@ The core idea is to simulate a "live session" where an AI tutor behaves like a h
     -   *"Draw a flowchart of a login process"* (Triggers `display_mermaid_diagram_on_canvas`)
 
 4.  **Settings**:
-    -   Click the gear icon in the sidebar to change the AI's voice.
+    -   Click the gear icon in the sidebar to configure your **API Key**.
+    -   Change the AI's voice.
+
 
 ## Tech Stack
 

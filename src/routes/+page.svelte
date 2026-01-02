@@ -14,7 +14,7 @@
     import { settings } from "$lib/stores/settings";
 
     // DO NOT hardcode the API key here in production!
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
+    // API Key is now in settings
 
     let session: GeminiSession | null = null;
     let messages: Message[] = [];
@@ -97,9 +97,15 @@
             }
 
             // Apply settings from store
+            session.config.apiKey = $settings.apiKey;
             session.config.voice = $settings.voice;
             session.config.history = messages;
             // session.config.model = ... (if we had model selection)
+
+            if (!session.config.apiKey) {
+                alert("Please set your API Key in Settings first.");
+                return;
+            }
 
             await session.start();
             isSessionActive = true;
@@ -117,10 +123,9 @@
 
     onMount(() => {
         // Initialize Gemini Session helper
+
         session = new GeminiSession({
-            apiKey: API_KEY,
-            systemInstruction:
-                "You are a helpful tutor. Be concise. You have access to 4 tools: 'display_sentence_on_canvas', 'display_conversation_on_canvas', 'display_code_on_canvas', and 'display_mermaid_diagram_on_canvas'. Use them when appropriate to visualize your explanation. Defaults to plain text if not specified.",
+            apiKey: $settings.apiKey,
             voice: $settings.voice,
         });
 
@@ -180,6 +185,12 @@
             type = "conversation";
         else if (name === "display_code_on_canvas") type = "code";
         else if (name === "display_mermaid_diagram_on_canvas") type = "mermaid";
+        else if (name === "display_flashcard_deck_srs") type = "flashcards";
+        else if (name === "display_table") type = "table";
+        else if (name === "display_location_on_map") type = "map";
+        else if (name === "display_mathematical_notation")
+            type = "mathematical_notation";
+        else if (name === "display_smiles") type = "smiles";
 
         if (type) {
             canvasData = { type, content: args };
@@ -228,9 +239,11 @@
                     {/if}
                     {isSessionActive
                         ? "Stop Session"
-                        : messages.length > 0
-                          ? "Resume Session"
-                          : "Start Session"}
+                        : !$settings.apiKey
+                          ? "Set API Key in Settings to Start"
+                          : messages.length > 0
+                            ? "Resume Session"
+                            : "Start Session"}
                 </button>
             </div>
         </div>

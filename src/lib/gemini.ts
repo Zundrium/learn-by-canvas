@@ -3,6 +3,7 @@
  * An optimized class for the Gemini Multimodal Live API.
  * Uses AudioWorklets for low-latency and strong typing for API integrity.
  */
+import systemInstruction from './SYSTEM_PROMPT.md?raw';
 
 interface GeminiConfig {
     apiKey: string;
@@ -53,6 +54,7 @@ export class GeminiSession {
     constructor(public config: GeminiConfig) {
         this.config.model ??= "models/gemini-2.5-flash-native-audio-preview-12-2025";
         this.config.voice ??= "Erinome";
+        this.config.systemInstruction ??= systemInstruction;
     }
 
     public async start() {
@@ -175,6 +177,154 @@ export class GeminiSession {
                                     graph: { type: "STRING", description: "The mermaid graph definition (e.g. 'graph TD; A-->B;')." }
                                 },
                                 required: ["graph"]
+                            }
+                        },
+                        {
+                            name: "display_flashcard_deck_srs",
+                            description: "Displays a deck of flashcards for spaced repetition practice. Use this when the user wants to memorize terms or concepts.",
+                            parameters: {
+                                type: "OBJECT",
+                                properties: {
+                                    deckName: { type: "STRING", description: "The name or topic of the deck." },
+                                    cards: {
+                                        type: "ARRAY",
+                                        items: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                front: { type: "STRING", description: "The content on the front of the card." },
+                                                back: { type: "STRING", description: "The content on the back of the card." },
+                                            },
+                                            required: ["front", "back"]
+                                        }
+                                    }
+                                },
+                                required: ["deckName", "cards"]
+                            }
+                        },
+                        {
+                            name: "display_table",
+                            description: "Displays a table of data. Use this to organize multiple items with attributes into columns.",
+                            parameters: {
+                                type: "OBJECT",
+                                properties: {
+                                    columns: {
+                                        type: "ARRAY",
+                                        description: "List of columns, where each column has a header and values.",
+                                        items: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                header: { type: "STRING", description: "The header/title of the column." },
+                                                values: {
+                                                    type: "ARRAY",
+                                                    description: "The list of string values for this column.",
+                                                    items: { type: "STRING" }
+                                                }
+                                            },
+                                            required: ["header", "values"]
+                                        }
+                                    }
+                                },
+                                required: ["columns"]
+                            }
+                        },
+                        {
+                            name: "display_location_on_map",
+                            description: "Displays a map centered on a specific location with optional markers and shapes (citizens, polygons).",
+                            parameters: {
+                                type: "OBJECT",
+                                properties: {
+                                    center: {
+                                        type: "OBJECT",
+                                        description: "The center of the map.",
+                                        properties: {
+                                            lat: { type: "NUMBER", description: "Latitude" },
+                                            lng: { type: "NUMBER", description: "Longitude" }
+                                        },
+                                        required: ["lat", "lng"]
+                                    },
+                                    zoom: { type: "NUMBER", description: "Zoom level (default 13)." },
+                                    markers: {
+                                        type: "ARRAY",
+                                        description: "List of markers to place on the map.",
+                                        items: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                lat: { type: "NUMBER", description: "Latitude" },
+                                                lng: { type: "NUMBER", description: "Longitude" },
+                                                title: { type: "STRING", description: "Hover title for the marker." },
+                                                popupText: { type: "STRING", description: "Text to display in a popup when clicked." }
+                                            },
+                                            required: ["lat", "lng"]
+                                        }
+                                    },
+                                    shapes: {
+                                        type: "ARRAY",
+                                        description: "List of shapes (circles, polygons) to draw on the map.",
+                                        items: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                type: { type: "STRING", description: "Type of shape: 'circle' or 'polygon'." },
+                                                color: { type: "STRING", description: "Stroke color (e.g., 'red', '#ff0000')." },
+                                                fillColor: { type: "STRING", description: "Fill color." },
+                                                popupText: { type: "STRING", description: "Text to display in a popup when clicked." },
+                                                // Circle properties
+                                                center: {
+                                                    type: "OBJECT",
+                                                    description: "Center for circle.",
+                                                    properties: {
+                                                        lat: { type: "NUMBER" },
+                                                        lng: { type: "NUMBER" }
+                                                    }
+                                                },
+                                                radius: { type: "NUMBER", description: "Radius in meters for circle." },
+                                                // Polygon properties
+                                                points: {
+                                                    type: "ARRAY",
+                                                    description: "List of points for polygon.",
+                                                    items: {
+                                                        type: "OBJECT",
+                                                        properties: {
+                                                            lat: { type: "NUMBER" },
+                                                            lng: { type: "NUMBER" }
+                                                        },
+                                                        required: ["lat", "lng"]
+                                                    }
+                                                }
+                                            },
+                                            required: ["type"]
+                                        }
+                                    }
+                                },
+                                required: ["center"]
+                            }
+                        },
+
+
+
+
+                        {
+                            name: "display_mathematical_notation",
+                            description: "Displays a mathematical equation using KaTeX. Use this to show formulas, equations, or mathematical expressions.",
+                            parameters: {
+                                type: "OBJECT",
+                                properties: {
+                                    equation: { type: "STRING", description: "The mathematical equation in LaTeX format (e.g. 'E = mc^2')." },
+                                    description: { type: "STRING", description: "A description or explanation of the equation." }
+                                },
+                                required: ["equation"]
+                            }
+                        },
+                        {
+                            name: "display_smiles",
+                            description: "Displays a chemical structure from a SMILES string using RDKit.",
+                            parameters: {
+                                type: "OBJECT",
+                                properties: {
+                                    smiles: { type: "STRING", description: "The SMILES string of the molecule." },
+                                    description: { type: "STRING", description: "A description of the molecule." },
+                                    substructure: { type: "STRING", description: "Optional SMILES or SMARTS string to highlight a substructure." }
+                                },
+                                required: ["smiles"]
                             }
                         }
                     ]
@@ -348,10 +498,22 @@ export class GeminiSession {
                     this.onCanvasUpdate({ type: 'code', content: call.args });
                 } else if (call.name === "display_mermaid_diagram_on_canvas") {
                     this.onCanvasUpdate({ type: 'mermaid', content: call.args });
+                } else if (call.name === "display_flashcard_deck_srs") {
+                    this.onCanvasUpdate({ type: 'flashcards', content: call.args });
+                } else if (call.name === "display_table") {
+                    this.onCanvasUpdate({ type: 'table', content: call.args });
+                } else if (call.name === "display_location_on_map") {
+                    this.onCanvasUpdate({ type: 'map', content: call.args });
+                } else if (call.name === "display_mathematical_notation") {
+                    this.onCanvasUpdate({ type: 'mathematical_notation', content: call.args });
+                } else if (call.name === "display_smiles") {
+                    this.onCanvasUpdate({ type: 'smiles', content: call.args });
+
+
+
                 } else {
                     console.warn("Unknown tool called:", call.name);
                 }
-
 
                 // Notify about tool call for UI
                 this.onToolCall?.(call.name, call.args);
@@ -363,16 +525,17 @@ export class GeminiSession {
                     response: { result: "ok" }
                 });
             }
-
-            // Send tool response back to Gemini to acknowledge the action
-            const responsePayload = {
-                toolResponse: {
-                    functionResponses: toolResponses
-                }
-            };
-            this.send(responsePayload);
         }
+
+        // Send tool response back to Gemini to acknowledge the action
+        const responsePayload = {
+            toolResponse: {
+                functionResponses: toolResponses
+            }
+        };
+        this.send(responsePayload);
     }
+
 
     private queueAudio(base64: string) {
         if (!this.audioContext || this.ignoreModelAudio) return; // Strict gate

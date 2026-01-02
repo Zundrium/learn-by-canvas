@@ -36,6 +36,39 @@ The `GeminiSession` in `src/lib/gemini.ts` currently supports the following tool
     -   **Purpose**: Renders a Mermaid diagram for visualizing flows or structures.
     -   **Parameters**: `graph` (string).
 
+5.  **`display_flashcard_deck_srs`**
+    -   **Purpose**: Displays a deck of flashcards for spaced repetition practice with flip animation.
+    -   **Parameters**: `deckName` (string), `cards` (array of objects with `front`, `back`).
+
+6.  **`display_table`**
+    -   **Purpose**: Displays specific information in a tabular format.
+    -   **Parameters**: `columns` (array of objects with `header` (string) and `values` (array of strings)).
+
+7.  **`display_location_on_map`**
+    -   **Purpose**: Displays an interactive map centered on a specific location with optional markers and shapes (citizens, polygons).
+    -   **Parameters**:
+        -   `center`: object with `lat`, `lng`
+        -   `zoom`: number (optional)
+        -   `markers`: array of objects with `lat`, `lng`, `title`, `popupText`
+        -   `shapes`: array of objects (optional). Each object supports:
+            -   `type`: "circle" or "polygon"
+            -   `color`: string (stroke color, optional)
+            -   `fillColor`: string (fill color, optional)
+            -   `popupText`: string (optional)
+            -   For circles: `center` (lat, lng object) and `radius` (number in meters)
+            -   For polygons: `points` (array of lat, lng objects)
+
+9.  **`display_mathematical_notation`**
+    -   **Purpose**: Displays a mathematical equation using KaTeX.
+    -   **Parameters**: `equation` (string, LaTeX format), `description` (string, optional).
+
+10. **`display_smiles`**
+    -   **Purpose**: Displays a chemical structure using RDKit.
+    -   **Parameters**: `smiles` (string), `description` (string, optional), `substructure` (string, optional - SMILES/SMARTS to highlight).
+
+
+
+
 ## Adding New Tools
 If you need to add a new tool (function call) to the Gemini session, please refer to the **[NEW_TOOL_README.md](./NEW_TOOL_README.md)** file for detailed instructions, best practices, and the required implementation steps.
 

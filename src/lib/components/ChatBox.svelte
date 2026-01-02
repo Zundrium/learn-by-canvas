@@ -65,7 +65,9 @@
                 {/if}
 
                 <div
-                    class="max-w-[80%] text-base leading-relaxed flex flex-col gap-2 {msg.role ===
+                    class="{msg.role === 'system'
+                        ? 'w-full'
+                        : 'max-w-[80%]'} text-base leading-relaxed flex flex-col gap-2 {msg.role ===
                     'user'
                         ? 'items-end'
                         : 'items-start'}"

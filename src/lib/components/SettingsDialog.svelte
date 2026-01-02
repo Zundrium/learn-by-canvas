@@ -79,6 +79,25 @@
             </div>
 
             <div class="p-6 space-y-6">
+                <!-- API Key Section -->
+                <div class="space-y-3">
+                    <label
+                        for="api-key"
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >API Key</label
+                    >
+                    <input
+                        id="api-key"
+                        type="password"
+                        bind:value={$settings.apiKey}
+                        placeholder="Enter your Gemini API Key"
+                        class="w-full bg-gray-100 dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none transition-colors"
+                    />
+                    <p class="text-xs text-gray-500">
+                        Your key is stored locally in your browser.
+                    </p>
+                </div>
+
                 <!-- Theme Section -->
                 <div class="space-y-3">
                     <span

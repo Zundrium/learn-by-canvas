@@ -137,18 +137,15 @@ function handleToolReplay(event: CustomEvent) {
 
 ## Step 5: Update System Instructions
 
-The `GeminiSession` is initialized in `src/routes/+page.svelte` with a `systemInstruction` string. This string often explicitly lists the tools available to the model to encourage their use.
+The `GeminiSession` uses a dedicated system prompt file located at `src/lib/SYSTEM_PROMPT.md`. This file contains the instructions for the AI, including how and when to use the available tools.
 
-1.  Locate the `onMount` block in `src/routes/+page.svelte`.
-2.  Update the `systemInstruction` string to include your new tool name.
+1.  Open `src/lib/SYSTEM_PROMPT.md`.
+2.  Add a new section describing your tool, its purpose ("When to use"), and the expected action.
 
-```typescript
-session = new GeminiSession({
-    apiKey: API_KEY,
-    // Update the tool count (e.g., "5 tools") and add your tool name to the list
-    systemInstruction: "You are a helpful tutor... You have access to 5 tools: ..., 'display_my_new_widget'. Use them when...",
-    // ...
-});
+```markdown
+## 6. `display_my_new_widget`
+*   **When to use:** When explaining concept X or visualizing data Y.
+*   **Action:** Create a widget with title and data points.
 ```
 
 ---
@@ -174,5 +171,6 @@ When a tool is called, the system effectively "acts" on it. While the *result* (
 - [ ] **Create** new UI component (e.g. `src/lib/components/canvas/MyWidget.svelte`).
 - [ ] **Import & Render** component in `Canvas.svelte`.
 - [ ] **Update** `handleToolReplay` logic in `src/routes/+page.svelte`.
-- [ ] **Update** `systemInstruction` in `src/routes/+page.svelte` to mention the new tool.
+- [ ] **Update** `handleToolReplay` logic in `src/routes/+page.svelte`.
+- [ ] **Update** `src/lib/SYSTEM_PROMPT.md` to describe the new tool.
 - [ ] **Test** with a prompt that specifically targets your tool description.

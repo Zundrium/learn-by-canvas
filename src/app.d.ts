@@ -9,5 +9,11 @@ declare global {
 		// interface Platform {}
 	}
 }
+declare module '*?raw' {
+	const content: string;
+	export default content;
+}
 
-export {};
+declare module 'smiles-drawer';
+
+export { };
