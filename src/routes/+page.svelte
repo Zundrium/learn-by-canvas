@@ -5,6 +5,7 @@
     import { GeminiSession } from "$lib/gemini";
     import Canvas from "$lib/components/Canvas.svelte";
     import AISoundWave from "$lib/components/AISoundWave.svelte";
+    import SettingsDialog from "$lib/components/SettingsDialog.svelte";
     import {
         sessions,
         currentSessionId,
@@ -20,6 +21,7 @@
     let messages: Message[] = [];
     let isSessionActive = false;
     let canvasData: { type: string; content: any } | null = null;
+    let showSettings = false;
 
     // Reactive statement to sync messages to the current session store
     $: if ($currentSessionId) {
@@ -103,7 +105,7 @@
             // session.config.model = ... (if we had model selection)
 
             if (!session.config.apiKey) {
-                alert("Please set your API Key in Settings first.");
+                showSettings = true;
                 return;
             }
 
@@ -202,7 +204,11 @@
     class="flex h-screen w-full bg-gray-50 dark:bg-gray-950 font-sans overflow-hidden text-gray-900 dark:text-white"
 >
     <!-- Sidebar -->
-    <Sidebar on:newChat={handleNewChat} on:selectChat={onSidebarSelectChat} />
+    <Sidebar
+        on:newChat={handleNewChat}
+        on:selectChat={onSidebarSelectChat}
+        on:openSettings={() => (showSettings = true)}
+    />
 
     <!-- Main Content Area -->
     <div class="flex-1 flex min-w-0">
@@ -265,3 +271,5 @@
         </div>
     </div>
 </div>
+
+<SettingsDialog isOpen={showSettings} onClose={() => (showSettings = false)} />

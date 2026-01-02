@@ -2,12 +2,10 @@
     import { createEventDispatcher } from "svelte";
     import { sessions, currentSessionId, chatStore } from "$lib/stores/chat";
     import { slide } from "svelte/transition";
-    import SettingsDialog from "./SettingsDialog.svelte";
 
     const dispatch = createEventDispatcher();
 
     let isExpanded = false;
-    let showSettings = false;
     let editingSessionId: string | null = null;
 
     // Formatting helper for date
@@ -292,7 +290,7 @@
     <!-- Settings Footer -->
     <div class="p-3 shrink-0 border-t border-gray-200 dark:border-white/5">
         <button
-            on:click={() => (showSettings = true)}
+            on:click={() => dispatch("openSettings")}
             class="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/5 transition-colors"
         >
             <div class="shrink-0">
@@ -321,5 +319,3 @@
         </button>
     </div>
 </div>
-
-<SettingsDialog isOpen={showSettings} onClose={() => (showSettings = false)} />
