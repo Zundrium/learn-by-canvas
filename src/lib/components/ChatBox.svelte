@@ -43,7 +43,7 @@
     }
 </script>
 
-<div class="flex flex-col h-full w-full bg-gray-900">
+<div class="flex flex-col h-full w-full bg-white dark:bg-gray-900">
     <!-- Messages Area -->
     <div
         class="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
@@ -58,7 +58,7 @@
             >
                 {#if msg.role === "model"}
                     <div
-                        class="h-8 w-8 rounded-full bg-blue-900/50 flex items-center justify-center text-[10px] font-bold text-blue-400 shrink-0"
+                        class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-[10px] font-bold text-blue-700 dark:text-blue-400 shrink-0"
                     >
                         AI
                     </div>
@@ -72,10 +72,10 @@
                 >
                     <div
                         class={msg.role === "user"
-                            ? "text-white"
+                            ? "text-gray-900 dark:text-white"
                             : msg.role === "system"
-                              ? "text-gray-600 italic text-center w-full max-w-[90%]"
-                              : "text-blue-400"}
+                              ? "text-gray-500 dark:text-gray-600 italic text-center w-full max-w-[90%]"
+                              : "text-blue-700 dark:text-blue-400"}
                     >
                         {#if msg.role === "system"}
                             <div class="flex items-center justify-center gap-2">
@@ -112,7 +112,7 @@
 
                 {#if msg.role === "user"}
                     <div
-                        class="h-8 w-8 rounded-full bg-gray-700/50 flex items-center justify-center text-[10px] font-bold text-gray-300 shrink-0"
+                        class="h-8 w-8 rounded-full bg-gray-100 dark:bg-gray-700/50 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-300 shrink-0"
                     >
                         U
                     </div>

@@ -30,6 +30,16 @@ export const chatStore = {
     subscribe: sessions.subscribe,
 
     createNewSession: () => {
+        const allSessions = get(sessions);
+        if (allSessions.length > 0) {
+            const mostRecent = allSessions[0];
+            // If the most recent session is empty (and untitled or default titled), reuse it
+            if (mostRecent.messages.length === 0) {
+                currentSessionId.set(mostRecent.id);
+                return mostRecent.id;
+            }
+        }
+
         const id = generateId();
         const newSession: Session = {
             id,
@@ -64,6 +74,17 @@ export const chatStore = {
                         }
                     }
                     return { ...s, messages, title, lastModified: Date.now() };
+                }
+                return s;
+            });
+        });
+    },
+
+    updateSessionTitle: (id: string, newTitle: string) => {
+        sessions.update(all => {
+            return all.map(s => {
+                if (s.id === id) {
+                    return { ...s, title: newTitle };
                 }
                 return s;
             });

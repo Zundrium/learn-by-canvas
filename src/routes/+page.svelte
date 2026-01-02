@@ -188,19 +188,21 @@
 </script>
 
 <div
-    class="flex h-screen w-full bg-gray-950 font-sans overflow-hidden text-white"
+    class="flex h-screen w-full bg-gray-50 dark:bg-gray-950 font-sans overflow-hidden text-gray-900 dark:text-white"
 >
     <!-- Sidebar -->
     <Sidebar on:newChat={handleNewChat} on:selectChat={onSidebarSelectChat} />
 
     <!-- Main Content Area -->
     <div class="flex-1 flex min-w-0">
-        <!-- Chat Section (1/3) -->
+        <!-- Chat Section -->
         <div
-            class="w-1/3 h-full flex flex-col relative border-r border-white/5 bg-gray-900"
+            class="w-md lg:w-xl h-full flex flex-col relative border-r border-gray-200 dark:border-white/5 bg-white dark:bg-gray-900"
         >
             <!-- Visualization Top -->
-            <div class="h-24 w-full relative z-10 bg-gray-900 shrink-0">
+            <div
+                class="h-24 w-full relative z-10 bg-white dark:bg-gray-900 shrink-0"
+            >
                 {#if session}
                     <AISoundWave {session} />
                 {/if}
@@ -212,13 +214,11 @@
 
             <!-- Controls -->
             <div
-                class="p-6 flex justify-center shrink-0 w-full bg-gray-900/95 backdrop-blur z-20 border-t border-white/5"
+                class=" flex justify-center shrink-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur z-20 border-t border-gray-200 dark:border-white/5"
             >
                 <button
-                    class="px-6 py-3 rounded-full font-semibold shadow-lg transition-all transform active:scale-95 flex items-center gap-2
-                    {isSessionActive
-                        ? 'bg-red-600 hover:bg-red-700 shadow-red-900/20'
-                        : 'bg-green-600 hover:bg-green-700 shadow-green-900/20'}"
+                    class="p-6 w-full font-semibold flex justify-center items-center gap-2 uppercase cursor-pointer transition-all transform hover:bg-white/5
+                    {isSessionActive ? 'text-red-700' : 'text-green-600'}"
                     on:click={toggleSession}
                 >
                     {#if isSessionActive}
@@ -235,13 +235,13 @@
             </div>
         </div>
 
-        <!-- Canvas Section (2/3) -->
+        <!-- Canvas Section -->
         <div
-            class="w-2/3 flex items-center justify-center bg-gray-950 relative overflow-hidden"
+            class="flex-1 flex items-center justify-center bg-gray-100 dark:bg-gray-950 relative overflow-hidden"
         >
             <!-- Abstract Background Element -->
             <div
-                class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-800/20 via-gray-950 to-gray-950 pointer-events-none"
+                class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-200/50 via-gray-100 to-gray-100 dark:from-gray-800/20 dark:via-gray-950 dark:to-gray-950 pointer-events-none"
             ></div>
 
             <div

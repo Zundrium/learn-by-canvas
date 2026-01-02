@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { settings, type Theme, type Voice } from "$lib/stores/settings";
+    import { settings, type Voice } from "$lib/stores/settings";
+    import { theme, type Theme } from "$lib/stores/theme";
+    import DarkLightSwitch from "./DarkLightSwitch.svelte";
     import { fade, scale } from "svelte/transition";
 
     export let isOpen = false;
@@ -14,7 +16,6 @@
         "Aoede",
         "Erinome",
     ];
-    const themes: Theme[] = ["light", "dark", "system"];
 
     function close() {
         onClose();
@@ -34,26 +35,27 @@
     >
         <!-- Modal Content -->
         <div
-            class="bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md ring-1 ring-white/10 overflow-hidden cursor-auto text-left"
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md ring-1 ring-gray-900/5 dark:ring-white/10 overflow-hidden cursor-auto text-left"
             role="dialog"
             aria-modal="true"
             aria-labelledby="settings-title"
+            tabindex="-1"
             on:click|stopPropagation={() => {}}
             on:keydown|stopPropagation={() => {}}
             transition:scale={{ duration: 200, start: 0.95 }}
         >
             <div
-                class="p-6 border-b border-white/5 flex justify-between items-center"
+                class="p-6 border-b border-gray-200 dark:border-white/5 flex justify-between items-center"
             >
                 <h2
                     id="settings-title"
-                    class="text-xl font-semibold text-white"
+                    class="text-xl font-semibold text-gray-900 dark:text-white"
                 >
                     Settings
                 </h2>
                 <button
                     on:click={close}
-                    class="p-2 hover:bg-white/5 rounded-full text-gray-400 hover:text-white transition-colors"
+                    class="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                     aria-label="Close"
                 >
                     <svg
@@ -80,25 +82,11 @@
                 <!-- Theme Section -->
                 <div class="space-y-3">
                     <span
-                        class="text-sm font-medium text-gray-300"
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300"
                         id="theme-label">Theme</span
                     >
-                    <div
-                        class="flex bg-gray-900/50 p-1 rounded-lg border border-white/5"
-                        role="group"
-                        aria-labelledby="theme-label"
-                    >
-                        {#each themes as theme}
-                            <button
-                                class="flex-1 py-2 px-3 text-sm rounded-md capitalize transition-all duration-200
-                                {$settings.theme === theme
-                                    ? 'bg-gray-700 text-white shadow-sm'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'}"
-                                on:click={() => ($settings.theme = theme)}
-                            >
-                                {theme}
-                            </button>
-                        {/each}
+                    <div class="p-0.5">
+                        <DarkLightSwitch />
                     </div>
                 </div>
 
@@ -106,13 +94,14 @@
                 <div class="space-y-3">
                     <label
                         for="voice-select"
-                        class="text-sm font-medium text-gray-300">Voice</label
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                        >Voice</label
                     >
                     <div class="relative">
                         <select
                             id="voice-select"
                             bind:value={$settings.voice}
-                            class="w-full bg-gray-900/50 border border-white/10 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none appearance-none cursor-pointer hover:bg-gray-900/80 transition-colors"
+                            class="w-full bg-gray-100 dark:bg-gray-900/50 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 outline-none appearance-none cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-900/80 transition-colors"
                         >
                             {#each voices as voice}
                                 <option value={voice}>{voice}</option>
@@ -143,11 +132,11 @@
             </div>
 
             <div
-                class="p-6 border-t border-white/5 bg-black/20 flex justify-end"
+                class="p-6 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/20 flex justify-end"
             >
                 <button
                     on:click={close}
-                    class="px-5 py-2.5 bg-white text-black font-medium rounded-xl hover:bg-gray-200 transition-colors"
+                    class="px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black font-medium rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
                 >
                     Done
                 </button>
