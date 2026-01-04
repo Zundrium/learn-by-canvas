@@ -5,6 +5,8 @@ This project is a SvelteKit application called **Learn By Canvas**. It utilizes 
 
 ## Key Technologies
 - **SvelteKit**: Frontend framework.
+- **shadcn-svelte**: UI component library.
+- **Tailwind CSS**: Utility-first CSS framework.
 - **Gemini Multimodal Live API**: For real-time voice and video interaction.
 - **WebSocket**: Used for communication with the Gemini API.
 

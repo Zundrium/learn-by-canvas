@@ -1,23 +1,38 @@
 <script lang="ts">
-    import { theme, type Theme } from "$lib/stores/theme";
-
-    const themes: Theme[] = ["light", "dark", "system"];
+    import { theme } from "$lib/stores/theme";
+    import { Button } from "$lib/components/ui/button";
+    import { Sun, Moon, Monitor } from "@lucide/svelte";
 </script>
 
-<div
-    class="flex bg-gray-100 dark:bg-gray-900/50 p-1 rounded-lg border border-gray-200 dark:border-white/5"
-    role="group"
-    aria-labelledby="theme-label"
->
-    {#each themes as t}
-        <button
-            class="flex-1 py-2 px-3 text-sm rounded-md capitalize transition-all duration-200
-            {$theme === t
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/5'}"
-            on:click={() => ($theme = t)}
-        >
-            {t}
-        </button>
-    {/each}
+<div class="flex items-center gap-1 p-1 border rounded-lg bg-background">
+    <Button
+        variant={$theme === "light" ? "secondary" : "ghost"}
+        size="icon"
+        onclick={() => ($theme = "light")}
+        class="w-8 h-8"
+        title="Light Mode"
+    >
+        <Sun class="w-4 h-4" />
+        <span class="sr-only">Light</span>
+    </Button>
+    <Button
+        variant={$theme === "dark" ? "secondary" : "ghost"}
+        size="icon"
+        onclick={() => ($theme = "dark")}
+        class="w-8 h-8"
+        title="Dark Mode"
+    >
+        <Moon class="w-4 h-4" />
+        <span class="sr-only">Dark</span>
+    </Button>
+    <Button
+        variant={$theme === "system" ? "secondary" : "ghost"}
+        size="icon"
+        onclick={() => ($theme = "system")}
+        class="w-8 h-8"
+        title="System Theme"
+    >
+        <Monitor class="w-4 h-4" />
+        <span class="sr-only">System</span>
+    </Button>
 </div>

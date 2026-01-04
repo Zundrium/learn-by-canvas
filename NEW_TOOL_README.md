@@ -79,6 +79,7 @@ The frontend listens for updates in `src/routes/+page.svelte`.
 
 1.  **Receive Data**: The `onCanvasUpdate` callback in `+page.svelte` updates the reactive `canvasData` variable.
 2.  **Create Component**: Create your new Svelte component in `src/lib/components/canvas/` (e.g., `MyWidget.svelte`).
+    > **Tip**: Use existing **shadcn-svelte** components (located in `$lib/components/ui`) such as `Card`, `Button`, or `Input` to ensure your new tool matches the application's design system.
 3.  **Update Canvas**: Import your specific component in `src/lib/components/Canvas.svelte` and add a conditional block to render it.
 
 In `src/lib/components/Canvas.svelte`:

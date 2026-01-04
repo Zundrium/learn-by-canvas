@@ -3,7 +3,6 @@
     import SentenceView from "$lib/components/canvas/SentenceView.svelte";
     import ConversationView from "$lib/components/canvas/ConversationView.svelte";
     import CodeView from "$lib/components/canvas/CodeView.svelte";
-
     import MermaidDiagramView from "$lib/components/canvas/MermaidDiagramView.svelte";
     import FlashcardDeck from "$lib/components/canvas/FlashcardDeck.svelte";
     import TableView from "$lib/components/canvas/TableView.svelte";
@@ -14,7 +13,9 @@
     export let data: { type: string; content: any } | null = null;
 </script>
 
-<div class="w-full h-full p-8 overflow-auto flex items-center justify-center">
+<div
+    class="w-full h-full p-8 overflow-auto flex items-center justify-center bg-muted/30"
+>
     {#if !data}
         <div
             in:fade
@@ -23,17 +24,17 @@
             <img
                 src="/logo.png"
                 alt="Learn By Canvas Logo"
-                class="w-32 h-32 object-contain"
+                class="w-32 h-32 object-contain grayscale invert dark:invert-0"
             />
             <div
-                class="text-4xl font-black tracking-widest text-white uppercase text-center"
+                class="text-4xl font-black tracking-widest text-foreground uppercase text-center"
             >
                 Learn By Canvas
             </div>
             <a
                 href="https://github.com/Zundrium/learn-by-canvas"
                 target="_blank"
-                class="text-white/50 hover:text-white transition-colors text-sm tracking-widest uppercase border-b border-transparent hover:border-white"
+                class="text-muted-foreground hover:text-foreground transition-colors text-sm tracking-widest uppercase border-b border-transparent hover:border-foreground"
             >
                 github.com/Zundrium/learn-by-canvas
             </a>

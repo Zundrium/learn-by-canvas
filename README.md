@@ -79,9 +79,9 @@ The core idea is to simulate a "live session" where an AI tutor behaves like a h
 
 -   **Framework**: SvelteKit
 -   **Language**: TypeScript
--   **Styling**: TailwindCSS
+-   **Styling**: TailwindCSS, shadcn-svelte
 -   **AI**: Google Gemini Multimodal Live API
--   **Visuals**: Mermaid.js (diagrams), Highlight.js (code), Canvas API.
+-   **Visuals**: Mermaid.js (diagrams), Highlight.js (code), Canvas API, Lucide Svelte (icons).
 
 ## License
 

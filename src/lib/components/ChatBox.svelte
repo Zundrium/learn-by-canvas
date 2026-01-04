@@ -1,6 +1,8 @@
 <script lang="ts">
     import { afterUpdate, createEventDispatcher } from "svelte";
     import gsap from "gsap";
+    import { cn } from "$lib/utils";
+    import { Button } from "$lib/components/ui/button";
 
     const dispatch = createEventDispatcher();
 
@@ -43,46 +45,48 @@
     }
 </script>
 
-<div class="flex flex-col h-full w-full bg-white dark:bg-gray-900">
+<div class="flex flex-col h-full w-full bg-background">
     <!-- Messages Area -->
     <div
-        class="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
+        class="flex-1 overflow-y-auto p-4 space-y-6 scroll-smooth"
         bind:this={scrollContainer}
     >
         {#each messages as msg}
             <div
                 use:slideIn
-                class="flex w-full gap-2 md:gap-4 xl:gap-6 {msg.role === 'user'
-                    ? 'justify-end'
-                    : 'justify-start'}"
+                class={cn(
+                    "flex w-full gap-3",
+                    msg.role === "user" ? "justify-end" : "justify-start",
+                )}
             >
                 {#if msg.role === "model"}
                     <div
-                        class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-[10px] font-bold text-blue-700 dark:text-blue-400 shrink-0"
+                        class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0"
                     >
                         AI
                     </div>
                 {/if}
 
                 <div
-                    class="{msg.role === 'system'
-                        ? 'w-full'
-                        : 'max-w-[80%]'} text-base leading-relaxed flex flex-col gap-2 {msg.role ===
-                    'user'
-                        ? 'items-end'
-                        : 'items-start'}"
+                    class={cn(
+                        "flex flex-col gap-2 max-w-[80%]",
+                        msg.role === "system" &&
+                            "w-full max-w-none items-center",
+                        msg.role === "user" && "items-end",
+                    )}
                 >
                     <div
-                        class={msg.role === "user"
-                            ? "text-gray-900 dark:text-white"
-                            : msg.role === "system"
-                              ? "text-gray-500 dark:text-gray-600 italic text-center w-full max-w-[90%]"
-                              : "text-blue-700 dark:text-blue-400"}
+                        class={cn(
+                            "px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm",
+                            msg.role === "user"
+                                ? "bg-primary text-primary-foreground rounded-br-sm"
+                                : msg.role === "system"
+                                  ? "bg-transparent text-muted-foreground italic text-center text-xs shadow-none"
+                                  : "bg-muted text-foreground rounded-bl-sm",
+                        )}
                     >
                         {#if msg.role === "system"}
-                            <div class="flex items-center justify-center gap-2">
-                                <span>{msg.text}</span>
-                            </div>
+                            <span>{msg.text}</span>
                         {:else}
                             {#each msg.text.split(/(\s+)/) as word, i (i)}
                                 <span
@@ -94,27 +98,25 @@
                         {/if}
                     </div>
 
-                    <!-- Tool Call Indicator -->
+                    <!-- Tool Call Indicator (as a small chip/button below) -->
                     {#if msg.toolCall}
-                        <button
-                            class="flex items-center gap-2 text-xs text-red-400 hover:text-red-300 transition-colors group cursor-pointer"
-                            on:click={() =>
-                                dispatch("toolReplay", msg.toolCall)}
-                            title="Click to show on canvas"
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            class="h-6 text-xs text-muted-foreground hover:text-foreground gap-1.5 px-2"
+                            onclick={() => dispatch("toolReplay", msg.toolCall)}
                         >
-                            <div
-                                class="w-2 h-2 rounded-full bg-red-500 animate-pulse group-hover:scale-110 transition-transform"
-                            ></div>
-                            <span class="opacity-70 group-hover:opacity-100"
-                                >Updated Canvas</span
-                            >
-                        </button>
+                            <span
+                                class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"
+                            ></span>
+                            Show Output
+                        </Button>
                     {/if}
                 </div>
 
                 {#if msg.role === "user"}
                     <div
-                        class="h-8 w-8 rounded-full bg-gray-100 dark:bg-gray-700/50 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-300 shrink-0"
+                        class="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground shrink-0"
                     >
                         U
                     </div>

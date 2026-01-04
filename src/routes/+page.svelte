@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, tick } from "svelte";
+    import { onMount } from "svelte";
     import ChatBox from "$lib/components/ChatBox.svelte";
     import Sidebar from "$lib/components/Sidebar.svelte";
     import { GeminiSession } from "$lib/gemini";
@@ -13,6 +13,9 @@
         type Message,
     } from "$lib/stores/chat";
     import { settings } from "$lib/stores/settings";
+    import { Button } from "$lib/components/ui/button";
+    import { Loader2, Mic } from "@lucide/svelte";
+    import { cn } from "$lib/utils";
 
     // DO NOT hardcode the API key here in production!
     // API Key is now in settings
@@ -201,7 +204,7 @@
 </script>
 
 <div
-    class="flex h-screen w-full bg-gray-50 dark:bg-gray-950 font-sans overflow-hidden text-gray-900 dark:text-white"
+    class="flex h-screen w-full bg-background font-sans overflow-hidden text-foreground"
 >
     <!-- Sidebar -->
     <Sidebar
@@ -214,12 +217,10 @@
     <div class="flex-1 flex min-w-0">
         <!-- Chat Section -->
         <div
-            class="w-md lg:w-xl h-full flex flex-col relative border-r border-gray-200 dark:border-white/5 bg-white dark:bg-gray-900"
+            class="w-full md:w-[450px] lg:w-[500px] xl:w-[600px] h-full flex flex-col relative border-r bg-background shrink-0"
         >
             <!-- Visualization Top -->
-            <div
-                class="h-24 w-full relative z-10 bg-white dark:bg-gray-900 shrink-0"
-            >
+            <div class="h-24 w-full relative z-10 bg-background shrink-0">
                 {#if session}
                     <AISoundWave {session} />
                 {/if}
@@ -231,36 +232,44 @@
 
             <!-- Controls -->
             <div
-                class=" flex justify-center shrink-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur z-20 border-t border-gray-200 dark:border-white/5"
+                class="flex justify-center shrink-0 w-full bg-background/95 backdrop-blur z-20 border-t p-4 pb-6"
             >
-                <button
-                    class="p-6 w-full font-semibold flex justify-center items-center gap-2 uppercase cursor-pointer transition-all transform hover:bg-white/5
-                    {isSessionActive ? 'text-red-700' : 'text-green-600'}"
-                    on:click={toggleSession}
+                <Button
+                    size="lg"
+                    variant={isSessionActive
+                        ? "destructive"
+                        : !$settings.apiKey
+                          ? "secondary"
+                          : "default"}
+                    class={cn(
+                        "w-full h-14 text-lg font-semibold uppercase tracking-wide shadow-lg transition-all",
+                        isSessionActive && "animate-pulse", // Subtle pulse when active
+                    )}
+                    onclick={toggleSession}
                 >
                     {#if isSessionActive}
-                        <span
-                            class="w-2 h-2 rounded-full bg-white animate-pulse"
-                        ></span>
+                        <Loader2 class="w-5 h-5 mr-3 animate-spin" />
+                        Stop Session
+                    {:else if !$settings.apiKey}
+                        Set API Key to Start
+                    {:else if messages.length > 0}
+                        <Mic class="w-5 h-5 mr-3" />
+                        Resume Session
+                    {:else}
+                        <Mic class="w-5 h-5 mr-3" />
+                        Start Session
                     {/if}
-                    {isSessionActive
-                        ? "Stop Session"
-                        : !$settings.apiKey
-                          ? "Set API Key in Settings to Start"
-                          : messages.length > 0
-                            ? "Resume Session"
-                            : "Start Session"}
-                </button>
+                </Button>
             </div>
         </div>
 
         <!-- Canvas Section -->
         <div
-            class="flex-1 flex items-center justify-center bg-gray-100 dark:bg-gray-950 relative overflow-hidden"
+            class="flex-1 hidden md:flex items-center justify-center bg-muted/20 relative overflow-hidden"
         >
             <!-- Abstract Background Element -->
             <div
-                class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-200/50 via-gray-100 to-gray-100 dark:from-gray-800/20 dark:via-gray-950 dark:to-gray-950 pointer-events-none"
+                class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-muted/50 via-background to-background pointer-events-none"
             ></div>
 
             <div

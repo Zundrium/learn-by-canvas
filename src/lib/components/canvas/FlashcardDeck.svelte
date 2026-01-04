@@ -1,5 +1,9 @@
 <script lang="ts">
     import { fade } from "svelte/transition";
+    import { Button } from "$lib/components/ui/button";
+    import { Card, CardContent } from "$lib/components/ui/card";
+    import { ChevronLeft, ChevronRight, RotateCw } from "@lucide/svelte";
+    import { cn } from "$lib/utils";
 
     export let deckName: string = "Flashcards";
     export let cards: Array<{
@@ -45,10 +49,10 @@
 >
     <!-- Header -->
     <div class="text-center space-y-2">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+        <h2 class="text-2xl font-bold text-foreground">
             {deckName}
         </h2>
-        <div class="text-sm text-gray-500 dark:text-gray-400 font-mono">
+        <div class="text-sm text-muted-foreground font-mono">
             Card {currentIndex + 1} of {cards.length}
         </div>
     </div>
@@ -57,88 +61,71 @@
     <div class="relative w-full aspect-[3/2] perspective">
         <!-- The Card -->
         <button
-            class="w-full h-full relative preserve-3d transition-transform duration-500 cursor-pointer outline-none focus:ring-4 ring-blue-500/30 rounded-2xl"
+            class="w-full h-full relative preserve-3d transition-transform duration-500 cursor-pointer outline-none focus-visible:ring-4 ring-primary/30 rounded-xl"
             class:rotate-y-180={isFlipped}
             on:click={flipCard}
         >
             <!-- Front -->
-            <div
-                class="absolute inset-0 backface-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center p-8 text-center"
+            <Card
+                class="absolute inset-0 backface-hidden w-full h-full flex flex-col items-center justify-center p-8 text-center"
             >
-                <div class="text-3xl font-medium text-gray-900 dark:text-white">
+                <div class="text-3xl font-medium text-foreground">
                     {cards[currentIndex]?.front}
                 </div>
                 <div
-                    class="absolute bottom-4 text-xs uppercase tracking-widest text-gray-400"
+                    class="absolute bottom-4 text-xs uppercase tracking-widest text-muted-foreground"
                 >
                     Front
                 </div>
-            </div>
+            </Card>
 
             <!-- Back -->
-            <div
-                class="absolute inset-0 backface-hidden rotate-y-180 bg-blue-50 dark:bg-gray-800 rounded-2xl shadow-xl border-2 border-blue-200 dark:border-blue-900 flex flex-col items-center justify-center p-8 text-center"
+            <Card
+                class="absolute inset-0 backface-hidden rotate-y-180 w-full h-full flex flex-col items-center justify-center p-8 text-center bg-secondary"
             >
-                <div class="text-2xl text-gray-800 dark:text-blue-100">
+                <div class="text-2xl text-foreground">
                     {cards[currentIndex]?.back}
                 </div>
                 <div
-                    class="absolute bottom-4 text-xs uppercase tracking-widest text-blue-400"
+                    class="absolute bottom-4 text-xs uppercase tracking-widest text-secondary-foreground/70"
                 >
                     Back
                 </div>
-            </div>
+            </Card>
         </button>
     </div>
 
     <!-- Controls -->
     <div class="flex items-center gap-4">
-        <button
-            class="p-4 rounded-full bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm border border-gray-200 dark:border-gray-700 disabled:opacity-50 transition-colors"
-            on:click={prevCard}
+        <Button
+            variant="outline"
+            size="icon"
+            onclick={prevCard}
             disabled={currentIndex === 0}
+            class="rounded-full h-12 w-12"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <path d="m15 18-6-6 6-6" />
-            </svg>
-        </button>
+            <ChevronLeft class="w-6 h-6" />
+        </Button>
 
-        <button
-            class="px-8 py-3 rounded-full font-semibold bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:opacity-90 shadow-lg transition-transform active:scale-95"
-            on:click={flipCard}
+        <Button
+            variant="default"
+            size="lg"
+            onclick={flipCard}
+            class="rounded-full px-8 gap-2"
         >
+            <RotateCw class="w-4 h-4" />
             Flip
-        </button>
+        </Button>
 
-        <button
-            class="p-4 rounded-full bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm border border-gray-200 dark:border-gray-700 disabled:opacity-50 transition-colors"
-            on:click={nextCard}
+        <Button
+            variant="outline"
+            size="icon"
+            onclick={nextCard}
             disabled={currentIndex === cards.length - 1}
+            class="rounded-full h-12 w-12"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <path d="m9 18 6-6-6-6" />
-            </svg>
-        </button>
+            <ChevronRight class="w-6 h-6" />
+        </Button>
     </div>
 </div>
 
@@ -149,7 +136,7 @@
     .preserve-3d {
         transform-style: preserve-3d;
     }
-    .backface-hidden {
+    :global(.backface-hidden) {
         backface-visibility: hidden;
     }
     .rotate-y-180 {
